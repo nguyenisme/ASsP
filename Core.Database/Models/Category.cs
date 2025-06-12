@@ -9,30 +9,23 @@ using Core.Database.Interfaces;
 
 namespace Core.Database.Models
 {
-    [Table("Member")]
-    public class Member: IAuditable
+    [Table("Category")]
+    public class Category: IAuditable
     {
         [Key]
         public Guid Id { get; set; }
         [Required]
-        [MaxLength(100)]
+        [StringLength(150)]
         public string? Name { get; set; }
-        [MaxLength(50)]
-        public string? Picture { get; set; }
-        [Required]
-        [MaxLength(100)]
-        public string? LoginName { get; set; }
-        [MaxLength(100)]
-        public string? Password { get; set; }
-        [MaxLength(100)]
-        public string? Email { get; set; }
-        public DateTime? LastLogin { get; set; }
+        [ForeignKey("ParentId")]
+        public Guid ParentId { get; set; }
+        public Category? Parent { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreatedOn { get; set; }
         public Guid? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
-        [ForeignKey("GroupId")]
-        public Guid? GroupId { get; set; }
-        public Group? Group { get; set; }
+        public ICloneable<Product> Products { get; set; } = new HashSet<Product>();
+        public ICloneable<Category> ChildCategoris {  get; set; } = new HashSet<Category>();
+        public ICollection<Role> Roles { get; set; } = new HashSet<Role>();
     }
 }
